@@ -9,6 +9,8 @@ import Row from 'primevue/row';
 import ColumnGroup from 'primevue/columngroup';
 import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import InputNumber from 'primevue/inputnumber';
 
 import "primevue/resources/themes/lara-light-blue/theme.css"
 
@@ -21,4 +23,6 @@ createApp(App)
 .component("Row", Row)
 .component("Dropdown", Dropdown)
 .component("Button", Button)
+.component("InputText", InputText)
+.component("InputNumber", InputNumber)
 .mount("#app");

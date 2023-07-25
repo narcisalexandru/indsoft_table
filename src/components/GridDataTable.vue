@@ -1,14 +1,22 @@
 
 <template>
+  <AddProductForm
+    v-if="showModal"
+    @close="showModal = false"
+    @addProduct="handleAddProduct"
+  />
   <div class="card">
     <DataTable
       :value="products"
-      showGridlines 
+      show-gridlines 
       table-style="min-width: 50rem;"
     >
       <template #header>
         <div class="header-button">
-            <Button label="Adaugă" @click="$router.push('adauga')"></Button>
+          <Button
+            label="Adaugă"
+            @click="showModal = true"
+          />
         </div>
       </template>
       <Column
@@ -26,15 +34,16 @@
       <Column
         field="pret"
         header="Pret"
+        mode="decimal"
       />
     </DataTable>
-    <GridDropdown />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import GridDropdown from "./GridDropdown.vue";
+import AddProductForm from "./AddProductForm.vue";
 
 interface Product {
   id: string;
@@ -97,11 +106,17 @@ const getProductsMini = () => {
 };
 
 const products = ref<Product[]>([]);
+const showModal = ref(false);
 
 onMounted(() => {
   const data = getProductsMini();
   products.value = data;
 });
+
+const handleAddProduct = (newProduct: Product) => {
+  products.value.push(newProduct);
+  showModal.value = false;
+}
 
 </script>
 

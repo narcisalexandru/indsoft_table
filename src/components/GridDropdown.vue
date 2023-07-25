@@ -1,7 +1,14 @@
 <template>
-    <div class="card flex justify-content-center">
-        <Dropdown v-model="selectedAction" :options="actions" optionLabel="name" @change="navigateToPage" placeholder="Selectează o acțiune" class="w-full md:w-14rem" />
-    </div>
+  <div class="card flex justify-content-center">
+    <Dropdown
+      v-model="selectedAction"
+      :options="actions"
+      option-label="name"
+      placeholder="Selectează o acțiune"
+      class="w-full md:w-14rem"
+      @change="navigateToPage"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
