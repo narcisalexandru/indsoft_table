@@ -60,16 +60,25 @@
             :value="data[field]"
             mode="currency"
             currency="RON"
-          />
-        </template>
-      </Column>
-      <Column
-        header="Actiuni"
+            />
+          </template>
+        </Column>
+        <Column
+        header="Edit"
         :row-editor="true"
         style="width: 10%; min-width: 8rem"
         body-style="text-align:center"
-      />
-    </DataTable>
+        />
+        <Column
+        header="Șterge"
+        style="width: 10%; min-width: 8rem"
+        body-style="text-align:center"
+        >
+          <template #body="{ data }">
+            <Button label="Șterge" severity="danger" @click="deleteProduct(data)" />
+          </template>
+        </Column>
+      </DataTable>
   </div>
 </template>
 
@@ -160,6 +169,13 @@ const handleAddProduct = (newProduct: Product) => {
   products.value.push(newProduct);
   showModal.value = false;
 }
+
+const deleteProduct = (product: Product) => {
+  const index = products.value.findIndex((p) => p.id === product.id);
+  if (index !== -1) {
+    products.value.splice(index, 1);
+  }
+};
 
 </script>
 
