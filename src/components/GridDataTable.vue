@@ -1,15 +1,19 @@
-
 <template>
   <AddProductForm
     v-if="showModal"
-    @close="showModal = false"
-    @addProduct="handleAddProduct"
+    @cancel-form="showModal = false"
+    @add-product="handleAddProduct"
   />
   <div class="card">
     <DataTable
+      v-model:editing-rows="editingRows"
       :value="products"
-      show-gridlines 
-      table-style="min-width: 50rem;"
+      edit-mode="row"
+      data-key="id"
+      table-class="editable-cells-table"
+      show-gridlines
+      table-style="min-width: 1680px;"
+      @row-edit-save="onRowEditSave"
     >
       <template #header>
         <div class="header-button">
@@ -22,19 +26,48 @@
       <Column
         field="id"
         header="ID"
-      />
+      >
+        <template #editor="{ data, field }">
+          <InputText v-model="data[field]" />
+        </template>
+      </Column>
       <Column
         field="denumire"
         header="Denumire"
-      />
+      >
+        <template #editor="{ data, field }">
+          <InputText v-model="data[field]" />
+        </template>
+      </Column>
       <Column
         field="stoc"
         header="Stoc"
-      />
+      >
+        <template #editor="{ data, field }">
+          <InputNumber v-model="data[field]" />
+        </template>
+      </Column>
       <Column
         field="pret"
         header="Pret"
-        mode="decimal"
+      >
+        <template #body="{ data, field }">
+          {{ formatCurrency(data[field]) }}
+        </template>
+        <template #editor="{ data, field }">
+          <InputNumber
+            v-model="data[field]"
+            :value="data[field]"
+            mode="currency"
+            currency="RON"
+          />
+        </template>
+      </Column>
+      <Column
+        header="Actiuni"
+        :row-editor="true"
+        style="width: 10%; min-width: 8rem"
+        body-style="text-align:center"
       />
     </DataTable>
   </div>
@@ -42,8 +75,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import GridDropdown from "./GridDropdown.vue";
 import AddProductForm from "./AddProductForm.vue";
+
+const editingRows = ref([]);
+const products = ref<Product[]>([]);
+const showModal = ref(false);
 
 interface Product {
   id: string;
@@ -51,6 +87,12 @@ interface Product {
   stoc: number;
   pret: number;
 }
+
+
+const onRowEditSave = (event: { newData: Product, index: number }) => {
+    let { newData, index } = event;
+    products.value[index] = newData;
+};
 
 const getProductsMini = () => {
   return [
@@ -105,8 +147,9 @@ const getProductsMini = () => {
   ];
 };
 
-const products = ref<Product[]>([]);
-const showModal = ref(false);
+const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(value);
+}
 
 onMounted(() => {
   const data = getProductsMini();

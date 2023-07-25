@@ -11,6 +11,8 @@ import Dropdown from 'primevue/dropdown';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
+import Toast from "primevue/toast";
+import Dialog from 'primevue/dialog';
 
 import "primevue/resources/themes/lara-light-blue/theme.css"
 
@@ -25,4 +27,6 @@ createApp(App)
 .component("Button", Button)
 .component("InputText", InputText)
 .component("InputNumber", InputNumber)
+.component("Toast", Toast)
+.component("Dialog", Dialog)
 .mount("#app");
